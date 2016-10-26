@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "88177C0580D7FEAEED0181016348F5BA578352C8",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "E5BB9AF73A637F1518DBAA772C7061A049384C6B" : 9223372036854775807,
+    "88177C0580D7FEAEED0181016348F5BA578352C8" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "6BEE962D-CC8D-4EA9-BB8F-BE2C1D03AA54",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "E5BB9AF73A637F1518DBAA772C7061A049384C6B" : "..",
+    "88177C0580D7FEAEED0181016348F5BA578352C8" : "PicFeed\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "PicFeed",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "PicFeed.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/rahelsel\/Week3-Instagram-Clone",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "88177C0580D7FEAEED0181016348F5BA578352C8"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/rahelsel\/Week3-Instagram-Clone.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "E5BB9AF73A637F1518DBAA772C7061A049384C6B"
+    }
+  ]
+}
