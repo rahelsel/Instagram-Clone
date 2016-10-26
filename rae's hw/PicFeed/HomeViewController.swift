@@ -104,31 +104,31 @@ class HomeViewController: UIViewController {
         let actionSheet = UIAlertController(title: "Filters", message: "Please Pick a Filter:", preferredStyle: .actionSheet)
         
         let bwAction = UIAlertAction(title: "Black & White", style: .default) { (action) in
-            Filters.blackAndWhite(image: image, completion: { (filteredImage) in
+            Filters.shared.blackAndWhite(image: image, completion: { (filteredImage) in
                 self.imageView.image = filteredImage
             })
         }
         
         let chromeAction = UIAlertAction(title: "Chrome", style: .default) { (action) in
-            Filters.chrome(image: image, completion: { (filteredImage) in
+            Filters.shared.chrome(image: image, completion: { (filteredImage) in
                 self.imageView.image = filteredImage
             })
         }
 
         let vintageAction = UIAlertAction(title: "Vintage", style: .default) { (action) in
-            Filters.chrome(image: image, completion: { (filteredImage) in
+            Filters.shared.chrome(image: image, completion: { (filteredImage) in
                 self.imageView.image = filteredImage
             })
         }
         
         let noirAction = UIAlertAction(title: "Noir", style: .default) { (action) in
-            Filters.chrome(image: image, completion: { (filteredImage) in
+            Filters.shared.chrome(image: image, completion: { (filteredImage) in
                 self.imageView.image = filteredImage
             })
         }
         
         let gaussianBlurAction = UIAlertAction(title: "Gaussian Blur", style: .default) { (action) in
-            Filters.chrome(image: image, completion: { (filteredImage) in
+            Filters.shared.chrome(image: image, completion: { (filteredImage) in
                 self.imageView.image = filteredImage
             })
         }

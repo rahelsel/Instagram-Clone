@@ -12,9 +12,20 @@ typealias FilterCompletion = (UIImage?)->()
 
 class Filters{
 
+    static let shared = Filters()
+    
     static var originalImage = UIImage()
     
-    class func filter(name: String, image: UIImage, completion: @escaping FilterCompletion){
+    let context : CIContext!
+    
+    private init(){
+        let options = [kCIContextOutputColorSpace: NSNull()]
+        let eaglContext = EAGLContext(api: .openGLES2)
+        self.context = CIContext(eaglContext: eaglContext!, options: options)
+
+    }
+    
+     func filter(name: String, image: UIImage, completion: @escaping FilterCompletion){
         OperationQueue().addOperation {
             
             guard let filter = CIFilter(name: name) else { fatalError("Check Spelling of Filter Name.") }
@@ -23,13 +34,9 @@ class Filters{
             
             filter.setValue(ciImage, forKey: kCIInputImageKey)
             
-            let options = [kCIContextOutputColorSpace: NSNull()]
-            let eaglContext = EAGLContext(api: .openGLES2)
-            let context = CIContext(eaglContext: eaglContext!, options: options)
+                        guard let outputImage = filter.outputImage else { fatalError("Error retrieving output image from filter.") }
             
-            guard let outputImage = filter.outputImage else { fatalError("Error retrieving output image from filter.") }
-            
-            guard let cgImage = context.createCGImage(outputImage, from: outputImage.extent) else { fatalError("Error Creating CGImage on GPU Context.") }
+            guard let cgImage = Filters.shared.context.createCGImage(outputImage, from: outputImage.extent) else { fatalError("Error Creating CGImage on GPU Context.") }
             
             OperationQueue.main.addOperation {
                 completion(UIImage(cgImage: cgImage))
@@ -39,36 +46,27 @@ class Filters{
     
     }
 
-    class Singleton {
     
-        static let sharedInstance: Singleton = {
-            let instance = Singleton()
-            
-            return instance
-        }()
+    
+     func vintage(image: UIImage, completion: @escaping FilterCompletion){
+        filter(name: "CIPhotoEffectTransfer", image: image, completion: completion)
     }
     
+     func blackAndWhite(image: UIImage, completion: @escaping FilterCompletion){
+        filter(name: "CIPhotoEffectMono", image: image, completion: completion)
+    }
+
+     func chrome(image: UIImage, completion: @escaping FilterCompletion){
+        filter(name: "CIPhotoEffectChrome", image: image, completion: completion)
+    }
     
-    
-//    class func vintage(image: UIImage, completion: @escaping FilterCompletion){
-//        self.filter(name: "CIPhotoEffectTransfer", image: image, completion: completion)
-//    }
-//    
-//    class func blackAndWhite(image: UIImage, completion: @escaping FilterCompletion){
-//        self.filter(name: "CIPhotoEffectMono", image: image, completion: completion)
-//    }
-//
-//    class func chrome(image: UIImage, completion: @escaping FilterCompletion){
-//        self.filter(name: "CIPhotoEffectChrome", image: image, completion: completion)
-//    }
-//    
-//    class func noir(image: UIImage, completion: @escaping FilterCompletion){
-//        self.filter(name: "CIPhotoEffectNoir", image: image, completion: completion)
-//    }
-//
-//    class func gaussianBlur(image: UIImage, completion: @escaping FilterCompletion){
-//        self.filter(name: "CIGaussianBlur", image: image, completion: completion)
-//    }
+     func noir(image: UIImage, completion: @escaping FilterCompletion){
+        filter(name: "CIPhotoEffectNoir", image: image, completion: completion)
+    }
+
+     func gaussianBlur(image: UIImage, completion: @escaping FilterCompletion){
+        filter(name: "CIGaussianBlur", image: image, completion: completion)
+    }
 
     
 }
