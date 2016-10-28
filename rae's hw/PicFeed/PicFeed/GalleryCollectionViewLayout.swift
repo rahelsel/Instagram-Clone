@@ -8,6 +8,9 @@
 
 import UIKit
 
+
+
+
 class GalleryCollectionViewLayout: UICollectionViewFlowLayout {
     
     var columns: Int
