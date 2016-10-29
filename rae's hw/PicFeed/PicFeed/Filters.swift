@@ -46,7 +46,10 @@ class Filters{
     
     }
 
-    
+    func original(image: UIImage, completion: @escaping FilterCompletion){
+        completion(Filters.originalImage)
+        
+    }
     
      func vintage(image: UIImage, completion: @escaping FilterCompletion){
         filter(name: "CIPhotoEffectTransfer", image: image, completion: completion)

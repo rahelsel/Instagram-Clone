@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Social
 
 class HomeViewController: UIViewController {
     
@@ -23,6 +24,11 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         
         presentImagePicker(sourceType: .photoLibrary)
+        
+        if let galleryVC = self.tabBarController?.viewControllers?[1] as?
+            GalleryViewController {
+                galleryVC.delegate = self
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -33,7 +39,7 @@ class HomeViewController: UIViewController {
         postButtonTopConstraint.constant = 25
         filterButtonTopConstraint.constant = 8
         
-        UIView.animate(withDuration: 1.0) { 
+        UIView.animate(withDuration: 1.0) {
             self.view.layoutIfNeeded()
         }
     }
@@ -73,6 +79,13 @@ class HomeViewController: UIViewController {
         
     }
 
+    @IBAction func imageLongPressed(_ sender: UILongPressGestureRecognizer) {
+        guard let composeController = SLComposeViewController(forServiceType: SLServiceTypeTwitter) else { return }
+        
+        composeController.add(imageView.image)
+        self.present(composeController, animated: true, completion: nil)
+    }
+    
     @IBAction func imageTapped(_ sender: AnyObject) {
         presentActionSheet()
     
@@ -96,54 +109,69 @@ class HomeViewController: UIViewController {
         }
         
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        if segue.identifier == FiltersPreviewController.identifier{
+            if let filterController = segue.destination as? FiltersPreviewController{
+                filterController.post = Post(image: self.imageView.image!)
+                
+                filterController.delegate = self //need this HERE for hw//
+            }
+        }
+    
+    }
 
     @IBAction func filterButtonPressed(_ sender: AnyObject) {
         
-        guard let image = self.imageView.image else { return }
+        guard let _ = self.imageView.image else { return }
         
-        let actionSheet = UIAlertController(title: "Filters", message: "Please Pick a Filter:", preferredStyle: .actionSheet)
+        self.performSegue(withIdentifier: FiltersPreviewController.identifier, sender: nil)
         
-        let bwAction = UIAlertAction(title: "Black & White", style: .default) { (action) in
-            Filters.shared.blackAndWhite(image: image, completion: { (filteredImage) in
-                self.imageView.image = filteredImage
-            })
-        }
-        
-        let chromeAction = UIAlertAction(title: "Chrome", style: .default) { (action) in
-            Filters.shared.chrome(image: image, completion: { (filteredImage) in
-                self.imageView.image = filteredImage
-            })
-        }
-
-        let vintageAction = UIAlertAction(title: "Vintage", style: .default) { (action) in
-            Filters.shared.chrome(image: image, completion: { (filteredImage) in
-                self.imageView.image = filteredImage
-            })
-        }
-        
-        let noirAction = UIAlertAction(title: "Noir", style: .default) { (action) in
-            Filters.shared.chrome(image: image, completion: { (filteredImage) in
-                self.imageView.image = filteredImage
-            })
-        }
-        
-        let gaussianBlurAction = UIAlertAction(title: "Gaussian Blur", style: .default) { (action) in
-            Filters.shared.chrome(image: image, completion: { (filteredImage) in
-                self.imageView.image = filteredImage
-            })
-        }
+//        let actionSheet = UIAlertController(title: "Filters", message: "Please Pick a Filter:", preferredStyle: .actionSheet)
+//        
+//        let bwAction = UIAlertAction(title: "Black & White", style: .default) { (action) in
+//            Filters.shared.blackAndWhite(image: image, completion: { (filteredImage) in
+//                self.imageView.image = filteredImage
+//            })
+//        }
+//        
+//        let chromeAction = UIAlertAction(title: "Chrome", style: .default) { (action) in
+//            Filters.shared.chrome(image: image, completion: { (filteredImage) in
+//                self.imageView.image = filteredImage
+//            })
+//        }
+//
+//        let vintageAction = UIAlertAction(title: "Vintage", style: .default) { (action) in
+//            Filters.shared.chrome(image: image, completion: { (filteredImage) in
+//                self.imageView.image = filteredImage
+//            })
+//        }
+//        
+//        let noirAction = UIAlertAction(title: "Noir", style: .default) { (action) in
+//            Filters.shared.chrome(image: image, completion: { (filteredImage) in
+//                self.imageView.image = filteredImage
+//            })
+//        }
+//        
+//        let gaussianBlurAction = UIAlertAction(title: "Gaussian Blur", style: .default) { (action) in
+//            Filters.shared.chrome(image: image, completion: { (filteredImage) in
+//                self.imageView.image = filteredImage
+//            })
+//        }
         
 //        let resetAction = UIAlertAction(title: "Reset", style: .destructive) { (action) -> Void in
 //            self.imageView.image = Filters.original
 //        }
-       
-        actionSheet.addAction(bwAction)
-        actionSheet.addAction(chromeAction)
-        actionSheet.addAction(vintageAction)
-        actionSheet.addAction(noirAction)
-        actionSheet.addAction(gaussianBlurAction)
-        
-        self.present(actionSheet, animated: true, completion: nil)
+//       
+//        actionSheet.addAction(bwAction)
+//        actionSheet.addAction(chromeAction)
+//        actionSheet.addAction(vintageAction)
+//        actionSheet.addAction(noirAction)
+//        actionSheet.addAction(gaussianBlurAction)
+//        
+//        self.present(actionSheet, animated: true, completion: nil)
         
     }
 
@@ -179,5 +207,25 @@ extension HomeViewController: UIImagePickerControllerDelegate, UINavigationContr
     
         }
     }
+}
+
+
+extension HomeViewController: FiltersPreviewControllerDelegate { //need this HERE for hw//
+    
+    func filtersPreviewController(selected: UIImage) {
+        self.dismiss(animated: true, completion: nil)
+        self.imageView.image = selected
+    }
+
+}
+
+extension HomeViewController: GalleryViewControllerDelegate {
+    
+    func GalleryViewController(selected: UIImage) {
+        
+        self.imageView.image = selected
+        self.tabBarController?.selectedViewController = self
+    }
+
 }
 
